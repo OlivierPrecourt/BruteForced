@@ -334,11 +334,10 @@
             this.labelInfos.AutoSize = true;
             this.labelInfos.BackColor = System.Drawing.Color.Lime;
             this.labelInfos.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelInfos.Location = new System.Drawing.Point(71, 28);
+            this.labelInfos.Location = new System.Drawing.Point(13, 29);
             this.labelInfos.Name = "labelInfos";
-            this.labelInfos.Size = new System.Drawing.Size(214, 25);
+            this.labelInfos.Size = new System.Drawing.Size(0, 25);
             this.labelInfos.TabIndex = 0;
-            this.labelInfos.Text = "DECRYPTED: \"kittens\"";
             // 
             // Form1
             // 

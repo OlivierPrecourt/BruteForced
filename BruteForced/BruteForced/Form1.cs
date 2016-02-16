@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -24,9 +25,26 @@ namespace BruteForced
         private List<char> possibleChars;
         private List<int> possibleLenghts;
 
+        private bool isFound;
+        private MD5 MD5Hasher;
+
         public Form1()
         {
             InitializeComponent();
+        }
+
+        private string GetHash(string input)
+        {
+            StringBuilder stringBuilder = new StringBuilder();
+
+            byte[] byteArray = MD5Hasher.ComputeHash(Encoding.UTF8.GetBytes(input));
+
+            for (int i = 0; i < byteArray.Length; i++)
+            {
+                stringBuilder.Append(byteArray[i].ToString("x2"));
+            }
+
+            return stringBuilder.ToString();
         }
 
         private bool AreParametersValid()
@@ -129,14 +147,41 @@ namespace BruteForced
                 return;
             }
 
+            labelInfos.Text = "";
+            isFound = false;
+            MD5Hasher = MD5.Create();
             InitializePossibleChars();
             InitializePossibleLenghts();
 
+            string generatedString = "";
+
             foreach (int lenght in possibleLenghts)
             {
-                for (int i = 0; i < lenght; i++)
-                {
+                TryHashes(lenght, generatedString);
+            }
+        }
 
+        private void TryHashes(int lenght, string generatedString)
+        {
+            if (generatedString.Length == lenght)
+            {
+                if (GetHash(generatedString) == txtHash.Text)
+                {
+                    labelInfos.Text = "Decrypted: " + generatedString;
+                    labelInfos.BackColor = Color.Green;
+                    isFound = true;
+                    return;
+                }
+            }
+            else
+            {
+                foreach (char _char in possibleChars)
+                {
+                    if (isFound)
+                    {
+                        return;
+                    }
+                    TryHashes(lenght, generatedString + _char);
                 }
             }
         }
